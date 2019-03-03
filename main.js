@@ -60,6 +60,7 @@ const sortResults = (drawnCards, aceFirst = true) => {
     'KING': 13,
   };
 
+  // dictionary for card values (assuming Ace is after King)
   const numericCardValuesAceLast = {
     '2': 2,
     '3': 3,
