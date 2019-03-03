@@ -31,12 +31,6 @@ const drawCards = (deckId, numberOfCards) => {
 }
 
 /**
- * Sorts the drawn cards array by numeric card value
- * 
- * @param {Array} drawnCards 
- */
-
-/**
  * Sorts the drawn cards array by numeric card value with a choose your own adventure option
  * 
  * @param {Array} drawnCards 
