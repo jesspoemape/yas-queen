@@ -76,6 +76,17 @@ const sortResults = (drawnCards, aceFirst = true) => {
 }
 
 /**
+ * Checks if a card value is valid. 
+ * I want to check for string and numbers because .includes does a strict equality check
+ * 
+ * @param {string | number} cardValue 
+ */
+const validateCardValue = (cardValue) => {
+  const validCardValues = ['ACE', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'JACK', 'QUEEN', 'KING', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+  return validCardValues.includes(cardValue);
+}
+
+/**
  * Draws cards from a shuffled deck and watches for a certain card value to be drawn from all suits before returning sorted list of cards drawn
  * 
  * @param {string | number} cardValueToWatchFor | 'ACE', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'JACK', 'QUEEN', 'KING'
@@ -84,6 +95,10 @@ const sortResults = (drawnCards, aceFirst = true) => {
  * @param {boolean?} aceFirst | how to sort the cards at the end
  */
 async function deckOfCards(cardValueToWatchFor, numberOfCardsToDraw, intervalBetweenEachIteration, aceFirst = true) {
+  if (!validateCardValue(cardValueToWatchFor)) {
+    console.log('Not a valid card value to watch for');
+    return;
+  }
   // keeps track of all the cards that have been drawn
   const drawnCards = {
     HEARTS: [],
@@ -133,4 +148,6 @@ async function deckOfCards(cardValueToWatchFor, numberOfCardsToDraw, intervalBet
 }
 
 
-deckOfCards('QUEEN', 2, 1000, false);
+// deckOfCards('QUEEN', 2, 1000, false);
+// deckOfCards('2', 2, 1000);
+// deckOfCards('HELLO', 2, 1000);
