@@ -1,5 +1,39 @@
 const fetch = require('node-fetch');
 
+  // dictionary for card values (assuming ace is below 2)
+  const numericCardValuesAceFirst = {
+    'ACE': 1,
+    '2': 2,
+    '3': 3,
+    '4': 4,
+    '5': 5,
+    '6': 6,
+    '7': 7,
+    '8': 8,
+    '9': 9,
+    '10': 10,
+    'JACK': 11,
+    'QUEEN': 12,
+    'KING': 13,
+  };
+
+  // dictionary for card values (assuming Ace is after King)
+  const numericCardValuesAceLast = {
+    '2': 2,
+    '3': 3,
+    '4': 4,
+    '5': 5,
+    '6': 6,
+    '7': 7,
+    '8': 8,
+    '9': 9,
+    '10': 10,
+    'JACK': 11,
+    'QUEEN': 12,
+    'KING': 13,
+    'ACE': 14,
+  };
+
 /**
  * Use fetch API to make a network request
  * 
@@ -36,44 +70,11 @@ const drawCards = (deckId, numberOfCards) => {
  * @param {Array} drawnCards 
  * @param {boolean?} aceFirst | Ace is after king or before 2? You decide.
  */
-const sortResults = (drawnCards, aceFirst = true) => {
-  // dictionary for card values (assuming ace is below 2)
-  const numericCardValuesAceFirst = {
-    'ACE': 1,
-    '2': 2,
-    '3': 3,
-    '4': 4,
-    '5': 5,
-    '6': 6,
-    '7': 7,
-    '8': 8,
-    '9': 9,
-    '10': 10,
-    'JACK': 11,
-    'QUEEN': 12,
-    'KING': 13,
-  };
-
-  // dictionary for card values (assuming Ace is after King)
-  const numericCardValuesAceLast = {
-    '2': 2,
-    '3': 3,
-    '4': 4,
-    '5': 5,
-    '6': 6,
-    '7': 7,
-    '8': 8,
-    '9': 9,
-    '10': 10,
-    'JACK': 11,
-    'QUEEN': 12,
-    'KING': 13,
-    'ACE': 14,
-  };
-  return drawnCards.sort((a, b) => {
-    return aceFirst ? numericCardValuesAceFirst[a] - numericCardValuesAceFirst[b] : numericCardValuesAceLast[a] - numericCardValuesAceLast[b];
-  });
-}
+const sortResults = (drawnCards, aceFirst = true) => (
+  drawnCards.sort((a, b) => (
+    aceFirst ? numericCardValuesAceFirst[a] - numericCardValuesAceFirst[b] : numericCardValuesAceLast[a] - numericCardValuesAceLast[b]
+  ))
+)
 
 /**
  * Checks if a card value is valid. 
@@ -82,8 +83,8 @@ const sortResults = (drawnCards, aceFirst = true) => {
  * @param {string | number} cardValue 
  */
 const validateCardValue = (cardValue) => {
-  const validCardValues = ['ACE', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'JACK', 'QUEEN', 'KING', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-  return validCardValues.includes(cardValue);
+  const validCardValues = ['ACE', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'JACK', 'QUEEN', 'KING'];
+  return validCardValues.includes(String(cardValue).toUpperCase());
 }
 
 /**
@@ -128,7 +129,7 @@ async function deckOfCards(cardValueToWatchFor, numberOfCardsToDraw, intervalBet
         // loop through the cards
         cardsResult.cards.forEach((card) => {
           // mark the card value to watch for as found when found
-          if (card.value === String(cardValueToWatchFor)) {
+          if (card.value === String(cardValueToWatchFor).toUpperCase()) {
             cardWatch[card.suit] = true;
           }
           // add card to list of drawn cards by suit
@@ -151,3 +152,4 @@ async function deckOfCards(cardValueToWatchFor, numberOfCardsToDraw, intervalBet
 // deckOfCards('QUEEN', 2, 1000, false);
 // deckOfCards('2', 2, 1000);
 // deckOfCards('HELLO', 2, 1000);
+// deckOfCards('jack', 2, 1000);
